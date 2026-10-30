@@ -1,4 +1,4 @@
-const CACHE_NAME = 'leticia-v3';
+const CACHE_NAME = 'leticia-v2';
 const urlsToCache = [
   './',
   './index.html',
@@ -6,7 +6,6 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', event => {
-  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))

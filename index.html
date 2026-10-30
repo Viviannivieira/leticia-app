@@ -32,6 +32,7 @@
             margin-bottom: 20px;
         }
 
+        /* Nome destacado, maior e com sombra charmosa */
         .header h1 {
             color: var(--rosa-escuro);
             font-size: 2.6rem;
@@ -71,6 +72,7 @@
             font-size: 1.6rem;
             font-weight: bold;
             color: var(--rosa-escuro);
+            transition: color 0.3s ease;
         }
 
         .metrica-rotulo {
@@ -135,12 +137,13 @@
             font-size: 1.8rem;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(255, 105, 180, 0.35);
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
             margin-bottom: 8px;
         }
 
         .btn-microfone:hover {
             transform: scale(1.06);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.5);
         }
 
         .input-rosa {
@@ -174,6 +177,11 @@
             cursor: pointer;
             margin-top: 12px;
             width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn-zerar:hover {
+            background-color: #FFF0F5;
         }
 
         .grid-agua {
@@ -190,7 +198,7 @@
             font-size: 1.6rem;
             cursor: pointer;
             opacity: 0.65;
-            transition: transform 0.2s, filter 0.2s;
+            transition: transform 0.2s, opacity 0.2s, filter 0.2s;
             filter: grayscale(100%) contrast(120%);
         }
 
@@ -208,29 +216,6 @@
             margin-top: 10px;
         }
 
-        .item-refeicao {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #FFE4E1;
-            padding: 8px 0;
-            font-size: 0.88rem;
-        }
-
-        .btn-deletar-item {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-left: 8px;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-
-        .btn-deletar-item:hover {
-            opacity: 1;
-        }
-
         .card-carinho {
             background: linear-gradient(135deg, #FFF0F5 0%, #FFFFFF 100%);
             border: 1px dashed #FFB6C1;
@@ -245,6 +230,7 @@
             border-radius: 20px;
             font-size: 0.85rem;
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 182, 193, 0.3);
         }
 
         .mensagem-mimo {
@@ -253,15 +239,6 @@
             line-height: 1.4;
             margin-top: 12px;
             font-style: italic;
-        }
-
-        .item-historico {
-            font-size: 0.82rem;
-            color: #5C2342;
-            padding: 6px 0;
-            border-bottom: 1px dashed #FFE4E1;
-            display: flex;
-            justify-content: space-between;
         }
     </style>
 </head>
@@ -272,7 +249,7 @@
         <p>Cuidando de você com leveza e carinho ✨</p>
     </div>
 
-    <!-- Resumo das Calorias -->
+    <!-- Card de Resumo do Dia e Meta Personalizada -->
     <div class="card">
         <div class="resumo-calorias">
             <div>
@@ -294,7 +271,7 @@
         <div id="banner-alerta" class="banner-alerta"></div>
     </div>
 
-    <!-- Hidratação -->
+    <!-- Card Hidratação -->
     <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <h3 style="font-size: 0.95rem; color: var(--rosa-escuro); margin: 0;">💧 Hidratação do Dia</h3>
@@ -316,7 +293,7 @@
         <div class="status-ml-agua" id="status-ml">Total ingerido: 0 ml (Meta: 2000 ml)</div>
     </div>
 
-    <!-- Entrada por Voz / Texto -->
+    <!-- Card de Registro por Voz ou Texto -->
     <div class="card" style="text-align: center;">
         <h2 style="font-size: 1rem; color: var(--rosa-escuro); margin-top: 0;">O que nutriu seu corpo agora? 🌿</h2>
         
@@ -324,26 +301,18 @@
         <p id="status-voz" style="font-size: 0.8rem; color: #8B5A75;">Fale ou digite suavemente abaixo</p>
 
         <div style="display: flex; gap: 8px; margin-top: 12px;">
-            <input type="text" id="input-alimento" placeholder="Ex: 120g de frango, pão doce, café com açúcar" class="input-rosa">
+            <input type="text" id="input-alimento" placeholder="Ex: 120g de frango, 2 ovos, tapioca" class="input-rosa">
             <button id="btn-adicionar" class="btn-rosa">+</button>
         </div>
     </div>
 
-    <!-- Lista de Refeições com opção de deletar item -->
+    <!-- Lista de Refeições -->
     <div class="card">
         <h3 style="font-size: 0.95rem; color: var(--rosa-escuro); margin-top: 0;">🌷 Refeições de Hoje</h3>
         <ul id="lista-refeicoes" style="list-style: none; padding: 0; margin: 0;">
             <li style="font-size: 0.85rem; color: #8B5A75; text-align: center; padding: 12px;">Nenhum registro ainda. O dia está só começando!</li>
         </ul>
-        <button id="btn-zerar" class="btn-zerar">Salvar no Histórico e Reiniciar o Dia</button>
-    </div>
-
-    <!-- Relatório e Histórico dos Dias Anteriores -->
-    <div class="card">
-        <h3 style="font-size: 0.95rem; color: var(--rosa-escuro); margin-top: 0;">📅 Histórico de Dias Anteriores</h3>
-        <div id="lista-historico">
-            <div style="font-size: 0.82rem; color: #8B5A75; text-align: center; padding: 6px;">Seus resumos salvos aparecerão aqui.</div>
-        </div>
+        <button id="btn-zerar" class="btn-zerar">Reiniciar registros do dia</button>
     </div>
 
     <!-- Card Mimo -->
@@ -363,7 +332,6 @@
         const inputMetaDiaria = document.getElementById('input-meta-diaria');
         const bannerAlerta = document.getElementById('banner-alerta');
         const btnZerar = document.getElementById('btn-zerar');
-        const listaHistorico = document.getElementById('lista-historico');
         
         const gridCopos = document.querySelectorAll('.copo-agua');
         const textoAgua = document.getElementById('texto-agua');
@@ -374,7 +342,6 @@
         let refeicoes = JSON.parse(localStorage.getItem('refeicoes_leticia')) || [];
         let coposAgua = parseInt(localStorage.getItem('agua_leticia')) || 0;
         let metaDiaria = parseInt(localStorage.getItem('meta_leticia')) || 1500;
-        let historicoDias = JSON.parse(localStorage.getItem('historico_leticia')) || [];
 
         inputMetaDiaria.value = metaDiaria;
 
@@ -386,16 +353,9 @@
             "Sua constância vale mais do que qualquer pressa. Você está no caminho certo! 🌺"
         ];
 
-        // Tabela melhorada com combinações e alimentos compostos
         const tabelaCaloriasLocal = {
-            'pao doce': 220, 'pão doce': 220,
-            'pao com manteiga': 210, 'pão com manteiga': 210,
-            'pao com margarina': 200, 'pão com margarina': 200,
-            'cafe com acucar': 45, 'café com açúcar': 45, 'cafe com acúcar': 45,
-            'peito de frango': 165, 'frango grelhado': 165,
-            'ovo frito': 110, 'ovo cozido': 75, 'ovo': 75,
-            'pao': 140, 'pão': 140, 'arroz': 130, 'feijao': 90, 'feijão': 90,
-            'frango': 165, 'maca': 80, 'maçã': 80, 'banana': 90, 
+            'ovo': 75, 'pao': 140, 'pão': 140, 'arroz': 130, 'feijao': 90, 'feijão': 90,
+            'frango': 165, 'peito de frango': 165, 'maca': 80, 'maçã': 80, 'banana': 90, 
             'salada': 30, 'cafe': 5, 'café': 5, 'tapioca': 130, 'cuscuz': 110, 'maionese': 50
         };
 
@@ -404,12 +364,12 @@
             const numeroEncontrado = textoMinusculo.match(/\d+/);
             let multiplicador = numeroEncontrado ? parseInt(numeroEncontrado[0]) : 1;
 
+            // Se falou em gramas (120g, 120gr, 120 gramas), ajusta a proporção por 100g
             const ehGramas = textoMinusculo.includes('g') || textoMinusculo.includes('grama') || textoMinusculo.includes('gr');
             if (ehGramas) {
                 multiplicador = multiplicador / 100;
             }
 
-            // Checa primeiro expressões compostas (ex: pão doce, café com açúcar)
             for (let alimento in tabelaCaloriasLocal) {
                 if (textoMinusculo.includes(alimento)) {
                     return Math.round(tabelaCaloriasLocal[alimento] * multiplicador);
@@ -418,13 +378,13 @@
 
             statusVoz.textContent = "🔍 Pesquisando suavemente na internet...";
             try {
-                const termoBusca = textoMinusculo.replace(/\d+/g, '').replace(/gramas|grama|gr|g|uma|um/g, '').trim();
+                const termoBusca = textoMinusculo.replace(/\d+/g, '').replace(/gramas|grama|gr|g/g, '').trim();
                 const response = await fetch(`https://br.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(termoBusca)}&search_simple=1&action=process&json=1`);
                 const data = await response.json();
 
                 if (data.products && data.products.length > 0 && data.products[0].nutriments) {
                     const kcal100g = data.products[0].nutriments['energy-kcal_100g'] || data.products[0].nutriments['energy-kcal_value'];
-                    if (kcal100g && kcal100g > 10) {
+                    if (kcal100g) {
                         statusVoz.textContent = "✨ Encontrado!";
                         return Math.round(kcal100g * multiplicador);
                     }
@@ -446,7 +406,6 @@
             const kcal = await buscarCaloriasHibrida(descricao);
 
             const novaRefeicao = { 
-                id: Date.now(),
                 texto: descricao, 
                 calorias: kcal, 
                 hora: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
@@ -460,12 +419,6 @@
             btnAdicionar.disabled = false;
             btnAdicionar.textContent = "+";
             setTimeout(() => { statusVoz.textContent = "Fale ou digite suavemente abaixo"; }, 2000);
-        }
-
-        function deletarItem(id) {
-            refeicoes = refeicoes.filter(item => item.id !== id);
-            localStorage.setItem('refeicoes_leticia', JSON.stringify(refeicoes));
-            atualizarTela();
         }
 
         function atualizarTela() {
@@ -496,14 +449,8 @@
                 listaRefeicoes.innerHTML = '';
                 refeicoes.forEach((ref) => {
                     const li = document.createElement('li');
-                    li.className = 'item-refeicao';
-                    li.innerHTML = `
-                        <span><strong>${ref.hora}</strong> - ${ref.texto}</span>
-                        <div>
-                            <span style="color: var(--rosa-escuro); font-weight: bold;">+${ref.calorias} kcal</span>
-                            <button class="btn-deletar-item" onclick="deletarItem(${ref.id})" title="Apagar este registro">🗑️</button>
-                        </div>
-                    `;
+                    li.style.cssText = 'display: flex; justify-content: space-between; border-bottom: 1px solid #FFE4E1; padding: 8px 0; font-size: 0.88rem;';
+                    li.innerHTML = `<span><strong>${ref.hora}</strong> - ${ref.texto}</span> <span style="color: var(--rosa-escuro); font-weight: bold;">+${ref.calorias} kcal</span>`;
                     listaRefeicoes.appendChild(li);
                 });
             }
@@ -519,19 +466,6 @@
             const totalMl = coposAgua * 250;
             textoAgua.textContent = `${coposAgua} de 8 copos`;
             statusMl.textContent = `Total ingerido: ${totalMl} ml (Meta: 2000 ml)`;
-
-            // Atualiza o Histórico exibido
-            if (historicoDias.length === 0) {
-                listaHistorico.innerHTML = '<div style="font-size: 0.82rem; color: #8B5A75; text-align: center; padding: 6px;">Seus resumos salvos aparecerão aqui.</div>';
-            } else {
-                listaHistorico.innerHTML = '';
-                historicoDias.slice(-5).reverse().forEach(dia => {
-                    const div = document.createElement('div');
-                    div.className = 'item-historico';
-                    div.innerHTML = `<span><strong>${dia.data}</strong>: ${dia.calorias} kcal</span> <span>💧 ${dia.aguaMl} ml</span>`;
-                    listaHistorico.appendChild(div);
-                });
-            }
         }
 
         inputMetaDiaria.addEventListener('change', (e) => {
@@ -546,7 +480,11 @@
         gridCopos.forEach((copo) => {
             copo.addEventListener('click', () => {
                 const index = parseInt(copo.getAttribute('data-index'));
-                coposAgua = (coposAgua === index + 1) ? index : index + 1;
+                if (coposAgua === index + 1) {
+                    coposAgua = index;
+                } else {
+                    coposAgua = index + 1;
+                }
                 localStorage.setItem('agua_leticia', coposAgua);
                 atualizarTela();
             });
@@ -565,23 +503,7 @@
         });
 
         btnZerar.addEventListener('click', () => {
-            if (refeicoes.length === 0 && coposAgua === 0) {
-                alert("O dia já está limpo!");
-                return;
-            }
-
-            if (confirm("Deseja salvar o resumo do dia de hoje no histórico e reiniciar?")) {
-                const totalCalorias = refeicoes.reduce((acc, item) => acc + item.calorias, 0);
-                const hoje = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-
-                historicoDias.push({
-                    data: hoje,
-                    calorias: totalCalorias,
-                    aguaMl: coposAgua * 250
-                });
-
-                localStorage.setItem('historico_leticia', JSON.stringify(historicoDias));
-
+            if (confirm("Deseja reiniciar as refeições e a água de hoje?")) {
                 refeicoes = [];
                 coposAgua = 0;
                 localStorage.removeItem('refeicoes_leticia');
