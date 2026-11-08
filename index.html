@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letícia - Minha Assistente</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FF69B4">
+    <link rel="apple-touch-icon" href="icon.png">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #FFF0F5; color: #4A4A4A; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        
+        /* Estilos da Tela de Login */
+        .login-card { background: white; padding: 30px 20px; border-radius: 20px; box-shadow: 0 8px 20px rgba(255, 105, 180, 0.15); width: 100%; max-width: 380px; text-align: center; border: 2px solid #FFE4E1; }
+        .login-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #FF69B4; margin-bottom: 12px; }
+        .login-title { color: #8B5A75; font-size: 1.4rem; margin-bottom: 6px; font-weight: bold; }
+        .login-sub { color: #888; font-size: 0.88rem; margin-bottom: 20px; }
+        .input-field { width: 100%; padding: 12px 15px; margin-bottom: 12px; border: 1.5px solid #FFD1DC; border-radius: 12px; outline: none; font-size: 0.95rem; background: #FFF9FA; }
+        .input-field:focus { border-color: #FF69B4; background: #FFF; }
+        .btn-login { width: 100%; padding: 14px; background: linear-gradient(135deg, #FF69B4, #FF1493); color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 20, 147, 0.2); transition: 0.2s; }
+        .btn-login:active { transform: scale(0.98); }
+        .msg-erro { color: #D8000C; font-size: 0.82rem; margin-top: 10px; min-height: 18px; }
+        .loading-spinner { display: none; margin-top: 10px; color: #FF69B4; font-size: 0.9rem; }
+    </style>
+
+    <!-- Conexão Firebase (Versão 10 Modular) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Suas chaves salvas do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSy...",
+            authDomain: "leticia-app.firebaseapp.com",
+            projectId: "leticia-app",
+            storageBucket: "leticia-app.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef..."
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.auth = auth;
+        window.db = db;
+        window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+        window.onAuthStateChanged = onAuthStateChanged;
+        window.signOut = signOut;
+        window.doc = doc;
+        window.getDoc = getDoc;
+    </script>
+</head>
+<body>
+
+    <!-- 1. TELA DE LOGIN (Exibida por padrão) -->
+    <div id="login-screen" class="login-card">
+        <img src="icon.png" alt="Letícia" class="login-avatar" onerror="this.src='https://via.placeholder.com/90/FF69B4/FFFFFF?text=Let%C3%ADcia'">
+        <h1 class="login-title">Letícia 🌸</h1>
+        <p class="login-sub">Sua assistente de calorias & bem-estar</p>
+
+        <form id="form-login" onsubmit="event.preventDefault(); fazerLogin();">
+            <input type="email" id="email" class="input-field" placeholder="Seu e-mail de compra" required>
+            <input type="password" id="senha" class="input-field" placeholder="Sua senha" required>
+            
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+
+        <div id="msg-erro" class="msg-erro"></div>
+        <div id="loading" class="loading-spinner">Verificando assinatura... ⏳</div>
+    </div>
+
+    <!-- 2. CONTEÚDO PRINCIPAL DA LETÍCIA (Inicia Oculto) -->
+    <div id="app-screen" style="display: none; width: 100%; max-width: 480px;">
+        
+        <!-- Cabeçalho com o Botão de Sair (Logout) -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <span style="color: #8B5A75; font-weight: bold; font-size: 1.1rem;">Letícia 🌸</span>
+            <button onclick="fazerLogout()" style="background: none; border: 1px solid #FF69B4; color: #FF69B4; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem;">Sair 🚪</button>
+        </div>
+
+        <!-- ⚠️ COLE AQUI SEUS CARDS DA LETÍCIA (Contador, Microfone, Água, Mimo, Histórico) -->
+        <div style="background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;">
+            <h2 style="color: #8B5A75;">Olá, Vivi! 💕</h2>
+            <p style="margin-top: 10px; color: #666;">Seu aplicativo da Letícia está ativo e pronto para uso!</p>
+        </div>
+
+        <!-- Rodapé de Proteção de Direitos Autorais -->
+        <footer style="text-align: center; font-size: 0.75rem; color: #8B5A75; margin-top: 20px; padding-bottom: 10px;">
+            © 2026 Letícia • Criado com carinho por <strong>Vivy Vieira</strong>. Todos os direitos reservados.
+        </footer>
+    </div>
+
+    <!-- Script de Controle do Login & Firebase -->
+    <script>
+        async function fazerLogin() {
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            const msgErro = document.getElementById('msg-erro');
+            const loading = document.getElementById('loading');
+
+            msgErro.innerText = "";
+            loading.style.display = "block";
+
+            try {
+                await window.signInWithEmailAndPassword(window.auth, email, senha);
+            } catch (error) {
+                loading.style.display = "none";
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
+                    msgErro.innerText = "E-mail ou senha incorretos.";
+                } else {
+                    msgErro.innerText = "Erro ao fazer login. Tente novamente.";
+                }
+            }
+        }
+
+        // Verifica o estado da sessão automaticamente
+        window.addEventListener('load', () => {
+            const interval = setInterval(() => {
+                if (window.auth) {
+                    clearInterval(interval);
+                    
+                    window.onAuthStateChanged(window.auth, async (user) => {
+                        const loginScreen = document.getElementById('login-screen');
+                        const appScreen = document.getElementById('app-screen');
+                        const loading = document.getElementById('loading');
+                        const msgErro = document.getElementById('msg-erro');
+
+                        if (user) {
+                            loading.style.display = "block";
+                            try {
+                                const userRef = window.doc(window.db, "usuarios", user.uid);
+                                const userSnap = await window.getDoc(userRef);
+
+                                if (userSnap.exists() && userSnap.data().status === 'ativo') {
+                                    loginScreen.style.display = 'none';
+                                    appScreen.style.display = 'block';
+                                    if (typeof carregarDadosIniciais === 'function') {
+                                        carregarDadosIniciais();
+                                    }
+                                } else {
+                                    msgErro.innerText = "Sua assinatura não está ativa.";
+                                    loginScreen.style.display = 'block';
+                                    appScreen.style.display = 'none';
+                                    window.signOut(window.auth);
+                                }
+                            } catch (e) {
+                                msgErro.innerText = "Erro ao validar conta.";
+                            }
+                            loading.style.display = "none";
+                        } else {
+                            loginScreen.style.display = 'block';
+                            appScreen.style.display = 'none';
+                            loading.style.display = "none";
+                        }
+                    });
+                }
+            }, 100);
+        });
+
+        function fazerLogout() {
+            window.signOut(window.auth).then(() => {
+                window.location.reload();
+            });
+        }
+    </script>
+
+    <!-- ⚠️ COLE AQUI SEU SCRIPT ORIGINAL DA LETÍCIA (Funções das Refeições, Água, Voz) -->
+    <script>
+        // Suas funções e variáveis originais da Letícia entram aqui
+    </script>
+</body>
+</html>
